@@ -1,0 +1,588 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@300;400;500;600&display=swap');
+
+  :root {
+    --bg: #0A0A0A;
+    --surface: #111111;
+    --border: #1E1E1E;
+    --accent: #00FF88;
+    --accent-dim: rgba(0,255,136,0.12);
+    --accent-border: rgba(0,255,136,0.25);
+    --text-primary: #F0F0F0;
+    --text-secondary: #888888;
+    --text-tertiary: #444444;
+    --mono: 'IBM Plex Mono', monospace;
+    --sans: 'IBM Plex Sans', sans-serif;
+    --amber: #FFB800;
+    --amber-dim: rgba(255,184,0,0.1);
+    --amber-border: rgba(255,184,0,0.25);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { background: var(--bg); color: var(--text-primary); font-family: var(--sans); min-height: 100vh; }
+  .deck { max-width: 900px; margin: 0 auto; padding: 2rem 1.5rem; }
+
+  .nav {
+    display: flex; align-items: center; justify-content: space-between;
+    margin-bottom: 3rem; padding-bottom: 1rem; border-bottom: 1px solid var(--border);
+  }
+  .nav-brand { font-family: var(--mono); font-size: 12px; color: var(--accent); letter-spacing: 0.1em; text-transform: uppercase; }
+  .slide-counter { font-family: var(--mono); font-size: 11px; color: var(--text-tertiary); }
+  .slide-nav { display: flex; gap: 0.5rem; }
+  .slide-nav button {
+    background: var(--surface); border: 1px solid var(--border); color: var(--text-secondary);
+    padding: 6px 14px; font-family: var(--mono); font-size: 11px; cursor: pointer; transition: all 0.15s;
+  }
+  .slide-nav button:hover { border-color: var(--accent); color: var(--accent); }
+
+  .slide { display: none; animation: fadeIn 0.2s ease; }
+  .slide.active { display: block; }
+  @keyframes fadeIn { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: translateY(0); } }
+
+  .slide-label {
+    font-family: var(--mono); font-size: 10px; color: var(--accent);
+    letter-spacing: 0.15em; text-transform: uppercase; margin-bottom: 2rem;
+    display: flex; align-items: center; gap: 0.75rem;
+  }
+  .slide-label::after { content: ''; flex: 1; height: 1px; background: var(--border); }
+
+  .hero-title { font-size: clamp(2rem, 5vw, 3.5rem); font-weight: 300; line-height: 1.1; letter-spacing: -0.02em; margin-bottom: 1.5rem; }
+  .hero-title em { font-style: normal; color: var(--accent); }
+  .hero-sub { font-size: 1.1rem; color: var(--text-secondary); font-weight: 300; line-height: 1.6; max-width: 560px; margin-bottom: 3rem; }
+  .hero-meta { display: flex; gap: 2rem; flex-wrap: wrap; }
+  .meta-item { font-family: var(--mono); font-size: 11px; color: var(--text-tertiary); }
+  .meta-item span { color: var(--text-secondary); display: block; font-size: 13px; margin-top: 2px; }
+
+  .section-title { font-size: clamp(1.5rem, 3vw, 2.2rem); font-weight: 300; letter-spacing: -0.02em; line-height: 1.2; margin-bottom: 0.75rem; }
+  .section-title em { font-style: normal; color: var(--accent); }
+  .section-body { font-size: 0.95rem; color: var(--text-secondary); line-height: 1.7; max-width: 600px; margin-bottom: 2rem; }
+
+  .card-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1rem; margin-top: 1.5rem; }
+  .card { background: var(--surface); border: 1px solid var(--border); padding: 1.25rem; }
+  .card-label { font-family: var(--mono); font-size: 10px; color: var(--accent); letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 0.5rem; }
+  .card-title { font-size: 0.95rem; font-weight: 500; margin-bottom: 0.5rem; }
+  .card-body { font-size: 0.82rem; color: var(--text-secondary); line-height: 1.6; }
+
+  .code-block {
+    background: var(--surface); border: 1px solid var(--border); border-left: 2px solid var(--accent);
+    padding: 1.25rem; font-family: var(--mono); font-size: 0.8rem; color: var(--text-secondary);
+    line-height: 1.7; margin: 1.5rem 0; overflow-x: auto;
+  }
+  .code-block .hl { color: var(--accent); }
+  .code-block .comment { color: var(--text-tertiary); }
+
+  .stat-row { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 1rem; margin: 1.5rem 0; }
+  .stat { border-left: 2px solid var(--accent-border); padding-left: 1rem; }
+  .stat-value { font-size: 1.8rem; font-weight: 300; color: var(--accent); font-family: var(--mono); line-height: 1; margin-bottom: 0.25rem; }
+  .stat-label { font-size: 0.75rem; color: var(--text-secondary); line-height: 1.4; }
+
+  .timeline { margin: 1.5rem 0; }
+  .timeline-item { display: grid; grid-template-columns: 120px 1fr; gap: 1rem; padding: 0.75rem 0; border-top: 1px solid var(--border); align-items: start; }
+  .timeline-date { font-family: var(--mono); font-size: 11px; color: var(--accent); padding-top: 2px; }
+  .timeline-content { font-size: 0.88rem; color: var(--text-secondary); line-height: 1.5; }
+  .timeline-content strong { color: var(--text-primary); font-weight: 500; }
+
+  .comp-table { width: 100%; border-collapse: collapse; margin: 1.5rem 0; font-size: 0.82rem; }
+  .comp-table th { font-family: var(--mono); font-size: 10px; color: var(--text-tertiary); letter-spacing: 0.1em; text-transform: uppercase; text-align: left; padding: 0.5rem 0.75rem; border-bottom: 1px solid var(--border); }
+  .comp-table td { padding: 0.75rem; border-bottom: 1px solid var(--border); color: var(--text-secondary); vertical-align: top; line-height: 1.5; }
+  .comp-table td:first-child { color: var(--text-primary); font-weight: 500; }
+  .comp-table td.ours { color: var(--accent); }
+
+  .budget-table { width: 100%; border-collapse: collapse; font-size: 0.85rem; margin: 1.5rem 0; }
+  .budget-table th { font-family: var(--mono); font-size: 10px; color: var(--text-tertiary); text-transform: uppercase; letter-spacing: 0.1em; text-align: left; padding: 0.5rem 0.75rem; border-bottom: 1px solid var(--border); }
+  .budget-table td { padding: 0.65rem 0.75rem; border-bottom: 1px solid var(--border); color: var(--text-secondary); }
+  .budget-table td:first-child { color: var(--text-primary); }
+  .budget-table td:last-child { font-family: var(--mono); color: var(--accent); text-align: right; }
+  .budget-table tr.total td { color: var(--text-primary); font-weight: 500; border-top: 1px solid var(--accent-border); }
+  .budget-table tr.total td:last-child { color: var(--accent); font-size: 1.1rem; }
+
+  .highlight-box { background: var(--accent-dim); border: 1px solid var(--accent-border); padding: 1.25rem; margin: 1.5rem 0; }
+  .highlight-box p { font-size: 0.95rem; line-height: 1.6; color: var(--text-primary); }
+  .highlight-box .mono-label { font-family: var(--mono); font-size: 10px; color: var(--accent); letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 0.5rem; }
+
+  .amber-box { background: var(--amber-dim); border: 1px solid var(--amber-border); padding: 1.25rem; margin: 1.5rem 0; }
+  .amber-box p { font-size: 0.95rem; line-height: 1.6; color: var(--text-primary); }
+  .amber-box .mono-label { font-family: var(--mono); font-size: 10px; color: var(--amber); letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 0.5rem; }
+
+  .tier { background: var(--surface); border: 1px solid var(--border); padding: 1.25rem; margin-bottom: 1rem; }
+  .tier-header { display: flex; align-items: center; gap: 1rem; margin-bottom: 0.75rem; }
+  .tier-tag { font-family: var(--mono); font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase; padding: 2px 8px; border: 1px solid; }
+  .tier-tag.now { color: var(--accent); border-color: var(--accent-border); }
+  .tier-tag.soon { color: var(--amber); border-color: var(--amber-border); }
+  .tier-title { font-size: 0.95rem; font-weight: 500; }
+  .tier-body { font-size: 0.82rem; color: var(--text-secondary); line-height: 1.6; }
+  .tier-examples { margin-top: 0.75rem; display: flex; flex-wrap: wrap; gap: 0.4rem; }
+
+  .pill { display: inline-block; font-family: var(--mono); font-size: 10px; color: var(--accent); border: 1px solid var(--accent-border); padding: 2px 8px; letter-spacing: 0.05em; }
+  .pill.amber { color: var(--amber); border-color: var(--amber-border); }
+
+  .spec-link { font-family: var(--mono); font-size: 12px; color: var(--accent); text-decoration: none; border-bottom: 1px solid var(--accent-border); padding-bottom: 1px; }
+
+  .divider { border: none; border-top: 1px solid var(--border); margin: 1.5rem 0; }
+
+  .dots { display: flex; gap: 6px; margin-top: 2rem; justify-content: center; }
+  .dot { width: 6px; height: 6px; background: var(--border); cursor: pointer; transition: background 0.15s; }
+  .dot.active { background: var(--accent); }
+
+  @media (max-width: 600px) {
+    .card-grid { grid-template-columns: 1fr; }
+    .timeline-item { grid-template-columns: 1fr; }
+    .hero-meta { gap: 1rem; }
+  }
+</style>
+</head>
+<body>
+<div class="deck">
+
+  <div class="nav">
+    <div class="nav-brand">VAR / APEX — Pre-Seed 2026</div>
+    <div style="display:flex;align-items:center;gap:1rem;">
+      <div class="slide-counter" id="counter">01 / 10</div>
+      <div class="slide-nav">
+        <button onclick="prevSlide()">← Prev</button>
+        <button onclick="nextSlide()">Next →</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- SLIDE 1: COVER -->
+  <div class="slide active" id="slide-1">
+    <div class="slide-label">Cover</div>
+    <div class="hero-title">
+      The <em>accountability layer</em><br>for autonomous agents.
+    </div>
+    <div class="hero-sub">
+      AI agents are already moving institutional capital, routing payments, and making decisions with real-world consequences. When something goes wrong, there is no proof of what the agent actually did. VAR closes that gap — hardware-rooted, cryptographically verifiable, operator untrusted.
+    </div>
+    <div class="hero-meta">
+      <div class="meta-item">FOUNDER<span>Kenneth Kabogo</span></div>
+      <div class="meta-item">STAGE<span>Pre-Seed</span></div>
+      <div class="meta-item">ASK<span>$300K</span></div>
+      <div class="meta-item">SPEC<span><a class="spec-link" href="https://kennethkabogo.github.io/apex-spec" target="_blank">apex-spec</a></span></div>
+      <div class="meta-item">GITHUB<span><a class="spec-link" href="https://github.com/kennethkabogo/verifiable-agent-runtime" target="_blank">verifiable-agent-runtime</a></span></div>
+    </div>
+  </div>
+
+  <!-- SLIDE 2: PROBLEM -->
+  <div class="slide" id="slide-2">
+    <div class="slide-label">The Problem</div>
+    <div class="section-title">Agents act.<br><em>Nobody can prove what they did.</em></div>
+    <div class="section-body">
+      When an AI agent executes a financial transaction, routes a payment, or makes a compliance-critical decision — the only record is a software log. Software logs can be altered. Any compromised host can silently rewrite them. There is no cryptographic proof of what the agent decided, what data it saw, or whether the binary running it was tampered with.
+    </div>
+
+    <div class="highlight-box">
+      <div class="mono-label">Live Evidence — April 18, 2026</div>
+      <p>KelpDAO lost $290M because their verifier had no hardware-level execution boundary. Lazarus Group swapped binaries on the RPC nodes feeding the verifier. The malicious nodes showed truth to monitors, lies to the verifier. No attestation. No recourse. In a VAR architecture this attack fails at step one — a binary swap changes the PCR0 measurement, the KMS policy gate closes, and nothing settles.</p>
+    </div>
+
+    <div class="card-grid">
+      <div class="card">
+        <div class="card-label">Pain Point 01</div>
+        <div class="card-title">Institutions won't let agents touch capital</div>
+        <div class="card-body">No cryptographic proof of agent behavior means no institutional trust. Human backstops eliminate the efficiency gain that made agents worth building.</div>
+      </div>
+      <div class="card">
+        <div class="card-label">Pain Point 02</div>
+        <div class="card-title">Compliance can't survive regulatory review</div>
+        <div class="card-body">When a regulator asks "what did the agent do before it moved that capital?" — a log file is not a sufficient answer. The evidence needs to be hardware-rooted and tamper-evident.</div>
+      </div>
+      <div class="card">
+        <div class="card-label">Pain Point 03</div>
+        <div class="card-title">Dispute resolution is slow and manual</div>
+        <div class="card-body">Reconstructing what an agent did from logs takes weeks. An APEX bundle reduces that to hours — the proof already exists, produced in real time during execution.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SLIDE 3: SOLUTION -->
+  <div class="slide" id="slide-3">
+    <div class="slide-label">The Solution</div>
+    <div class="section-title"><em>VAR</em> — Verifiable Agent Runtime</div>
+    <div class="section-body">
+      VAR wraps any AI agent in a hardware-attested enclave. Every action produces a cryptographic receipt in real time — hardware-signed, PCR-bound, independently verifiable by any third party without trusting the operator or the host. The proof is produced during execution, not reconstructed afterward. By the time the agent finishes, the evidence already exists.
+    </div>
+
+    <div class="code-block">
+<span class="comment"># APEX Bundle — what every agent action produces, in real time</span>
+<span class="hl">bundle.header</span>       spec_version: "2.4.0" | session_id | agent_id: SHA-256(EIF)
+<span class="hl">bundle.attestation</span>  nsm_raw: COSE_Sign1 | pcr0/1/2 | session_pub (enclave-born key)
+<span class="hl">bundle.evidence</span>     seq[] → { action_type | payload_hash | prev_hash | entry_sig }
+<span class="hl">bundle.seal</span>         pcr_commitment | bundle_hash | seal_sig (Ed25519, session key)
+
+<span class="comment"># Verification: any third party, no trust in operator required</span>
+<span class="hl">verify(bundle)</span>      1. AWS root cert → PCR measurements
+                    2. session_pub in NSM user_data → key is enclave-born
+                    3. hash chain → no gaps, no alteration
+                    4. seal_sig → bundle is complete and untouched
+    </div>
+
+    <div class="stat-row">
+      <div class="stat">
+        <div class="stat-value">Real-time</div>
+        <div class="stat-label">Proof produced during execution — not reconstructed after the fact</div>
+      </div>
+      <div class="stat">
+        <div class="stat-value">&lt;200ms</div>
+        <div class="stat-label">Sealed crash recovery RTO — chain loses at most one evidence window</div>
+      </div>
+      <div class="stat">
+        <div class="stat-value">v2.4.0</div>
+        <div class="stat-label">Current spec — crash recovery, temporal attestation, PQ migration path, ZK extension roadmap</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SLIDE 4: WHY NOW -->
+  <div class="slide" id="slide-4">
+    <div class="slide-label">Why Now</div>
+    <div class="section-title">Three signals.<br><em>Same month.</em></div>
+    <div class="section-body">The infrastructure moment for agentic accountability is open now. It will close as incumbents react.</div>
+
+    <div class="timeline">
+      <div class="timeline-item">
+        <div class="timeline-date">May 2026</div>
+        <div class="timeline-content"><strong>NVIDIA + Microsoft announce OpenShell</strong> — an agent runtime built on Microsoft's security primitives. The market has validated that agents need a trust layer. OpenShell provides policy and containment. VAR provides what it doesn't: hardware-rooted proof of what the agent actually did, produced in real time, verifiable by any third party.</div>
+      </div>
+      <div class="timeline-item">
+        <div class="timeline-date">June 2026</div>
+        <div class="timeline-content"><strong>Tether ships TurboQuant in QVAC SDK 0.12.0</strong> — 5x KV cache compression puts QVAC agents on phone-class edge hardware. Agents are moving to constrained devices. APEX on ARM CCA edge hardware is the natural next deployment target, with bounded-memory online proof generation as the key enabling property.</div>
+      </div>
+      <div class="timeline-item">
+        <div class="timeline-date">June 2026</div>
+        <div class="timeline-content"><strong>TF-A v2.15 ships with the VAR author's SMC validation framework</strong> — 5 patches merged into ARM's Trusted Firmware-A by the same researcher who built VAR. The attestation methodology now in production firmware on billions of devices is the same methodology powering APEX bundles.</div>
+      </div>
+      <div class="timeline-item">
+        <div class="timeline-date">Ongoing</div>
+        <div class="timeline-content"><strong>$160B+ in DeFi TVL is managed by autonomous protocols today</strong> — source: DefiLlama. Every dollar is a dollar without an attestation layer. DeFi protocols, autonomous trading infrastructure, and agentic payment startups are the immediate market. Enterprise compliance buyers follow in 2027/2028.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SLIDE 5: WHY KENNETH -->
+  <div class="slide" id="slide-5">
+    <div class="slide-label">Why Kenneth</div>
+    <div class="section-title">Built from<br><em>the silicon up.</em></div>
+    <div class="section-body">VAR exists because of a research thread that started at the hardware boundary and worked its way up. The insight — that hardware trust boundaries are the only enforcement mechanism that survives a fully compromised host — comes from years inside the silicon layer, not from observing it from the application layer.</div>
+
+    <div class="timeline">
+      <div class="timeline-item">
+        <div class="timeline-date">TF-A</div>
+        <div class="timeline-content"><strong>5 patches merged into ARM's Trusted Firmware-A</strong> — SMC validation framework (shipped in v2.15), normative validation guidelines, SiP platform refactor applying the framework, SMC function ID validation guidelines, and SPMD spinlock correctness fix. Multi-round review with ARM engineers across multiple teams. Sixth patch in preparation.</div>
+      </div>
+      <div class="timeline-item">
+        <div class="timeline-date">Qualcomm</div>
+        <div class="timeline-content"><strong>Critical vulnerabilities in Qualcomm TF-A</strong> — spanning SMMU isolation bypass, TrustZone privilege escalation, and Secure World secret extraction across Snapdragon devices. Validated and paid under coordinated disclosure.</div>
+      </div>
+      <div class="timeline-item">
+        <div class="timeline-date">MediaTek</div>
+        <div class="timeline-content"><strong>CVE-2026-20467 assigned</strong> — High-severity finding in MediaTek's SiP SMC handler. Patch shipping in a future MediaTek Product Security Bulletin. Additional findings under coordinated disclosure.</div>
+      </div>
+      <div class="timeline-item">
+        <div class="timeline-date">APEX</div>
+        <div class="timeline-content"><strong>Authored the APEX spec</strong> — open, independently implementable, versioned at kennethkabogo.github.io/apex-spec. v2.4.0 includes sealed crash recovery protocol, temporal attestation (Argon2id SWF at hibernate boundaries), post-quantum migration path (ML-DSA primary, SPHINCS+ lattice-free alternative), and ZK integrity proof research extension targeting Nova/SuperNova IVC for O(1) verification.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SLIDE 6: THE STACK -->
+  <div class="slide" id="slide-6">
+    <div class="slide-label">The Stack</div>
+    <div class="section-title">VAR proves it.<br><em>Finfiti settles it.</em></div>
+    <div class="section-body">
+      VAR is the attestation primitive. Finfiti is the programmable settlement interface that lets agents touch money — route payments, release escrow, settle transactions — against a verified APEX attestation. Its value is derived entirely from VAR. Without the attestation layer, it's another fintech API. With it, it's the primitive that makes agent-native finance possible.
+    </div>
+
+    <div class="highlight-box">
+      <div class="mono-label">The S3 analogy</div>
+      <p>S3 is just object storage — a simple idea. But because it sits beneath everything, it became one of the most valuable pieces of infrastructure on earth. Finfiti is settlement storage: the lowest-level interface between a verified agent action and a financial consequence. We built it ourselves as the first application on APEX. It proved the primitive works in production. That's its job.</p>
+    </div>
+
+    <hr class="divider">
+
+    <div class="card-label" style="margin-bottom:1rem;">Roadmap — what the $300K builds toward</div>
+    <div class="card-grid">
+      <div class="card">
+        <div class="card-label">Now — Q3 2026</div>
+        <div class="card-title">EC2 Nitro deployment</div>
+        <div class="card-body">First real NSM attestation document. Python test suite validated against real hardware. APEX test vectors published. Simulation becomes production.</div>
+      </div>
+      <div class="card">
+        <div class="card-label">Q3 — Q4 2026</div>
+        <div class="card-title">Beta deployment</div>
+        <div class="card-body">One external party running their agent through VAR and producing a real APEX bundle. First APEX-compliant runtime outside our own codebase.</div>
+      </div>
+      <div class="card">
+        <div class="card-label">Q4 2026 — Q1 2027</div>
+        <div class="card-title">Institutional customer + ARM CCA</div>
+        <div class="card-body">Signed institutional customer in production. ARM CCA port begins. QVAC integration if Tether grant lands. Seed round.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SLIDE 7: MARKET -->
+  <div class="slide" id="slide-7">
+    <div class="slide-label">Market</div>
+    <div class="section-title">Who needs this<br><em>today vs. tomorrow.</em></div>
+    <div class="section-body">
+      Most fintechs are not deploying autonomous agents. They use ML models, rules engines, and decision support tools — a human still approves the high-stakes action. The true autonomous agent market, where agents touch money without human approval, is almost entirely crypto-native today. Enterprise compliance buyers are the 2027/2028 market.
+    </div>
+
+    <div class="tier">
+      <div class="tier-header">
+        <div class="tier-tag now">Today — 2026</div>
+        <div class="tier-title">Crypto-native autonomous agents</div>
+      </div>
+      <div class="tier-body">
+        These deployments already have fully autonomous agents touching money without human approval. The accountability gap is felt, not theoretical. $160B+ in DeFi TVL is managed autonomously today with no attestation layer underneath it. Source: DefiLlama.
+      </div>
+      <div class="tier-examples">
+        <span class="pill">DeFi treasury management</span>
+        <span class="pill">Autonomous trading infrastructure</span>
+        <span class="pill">DAO governance execution</span>
+        <span class="pill">Agentic payment startups</span>
+      </div>
+    </div>
+
+    <div class="tier">
+      <div class="tier-header">
+        <div class="tier-tag soon">Tomorrow — 2027/2028</div>
+        <div class="tier-title">Enterprise compliance buyers</div>
+      </div>
+      <div class="tier-body">
+        As autonomous agents move into freight, financial services, and insurance, the compliance buyer — General Counsel, Chief Risk Officer — will ask for proof of what the agent did. Log files will not be sufficient. APEX is the answer they'll need before they ask.
+      </div>
+      <div class="tier-examples">
+        <span class="pill amber">Freight / logistics</span>
+        <span class="pill amber">RWA portfolio management</span>
+        <span class="pill amber">Insurance claims processing</span>
+        <span class="pill amber">Institutional settlement desks</span>
+      </div>
+    </div>
+
+    <hr class="divider">
+
+    <div class="stat-row">
+      <div class="stat">
+        <div class="stat-value">$160B+</div>
+        <div class="stat-label">DeFi TVL managed autonomously today with no attestation layer — source: DefiLlama</div>
+      </div>
+      <div class="stat">
+        <div class="stat-value">$15T+</div>
+        <div class="stat-label">TAM — global transaction volume moving through autonomous agents as adoption scales</div>
+      </div>
+      <div class="stat">
+        <div class="stat-value">2-3 yrs</div>
+        <div class="stat-label">Window before incumbents react. Default trust layer for agentic execution is still unclaimed.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SLIDE 8: TRACTION -->
+  <div class="slide" id="slide-8">
+    <div class="slide-label">Traction</div>
+    <div class="section-title">Public record.<br><em>Independently verifiable.</em></div>
+    <div class="section-body">Every claim below is publicly verifiable. No internal metrics, no vanity numbers.</div>
+
+    <div class="timeline">
+      <div class="timeline-item">
+        <div class="timeline-date">Spec</div>
+        <div class="timeline-content"><strong>APEX v2.4.0 live at canonical URL</strong> — open, versioned, independently implementable. Crash recovery protocol, post-quantum migration path, ZK integrity proof research extension. <a class="spec-link" href="https://kennethkabogo.github.io/apex-spec" target="_blank">kennethkabogo.github.io/apex-spec</a></div>
+      </div>
+      <div class="timeline-item">
+        <div class="timeline-date">ARM</div>
+        <div class="timeline-content"><strong>5 patches merged into TF-A integration branch</strong> — SMC validation framework (v2.15), normative validation guidelines, SiP refactor, SMC function ID guidelines, SPMD spinlock correctness. Reviewed by ARM engineers across multiple teams. Sixth patch in preparation.</div>
+      </div>
+      <div class="timeline-item">
+        <div class="timeline-date">CVEs</div>
+        <div class="timeline-content"><strong>CVE-2026-20467 assigned — MediaTek SiP SMC handler.</strong> Critical findings in Qualcomm TF-A under coordinated disclosure with bounties paid. Additional MediaTek findings pending bulletin.</div>
+      </div>
+      <div class="timeline-item">
+        <div class="timeline-date">ZK Security</div>
+        <div class="timeline-content"><strong>Finding submitted to zcash/halo2</strong> — Pow5Chip panic on full-rate inputs via public Sponge API, confirmed with minimal reproducer against halo2_gadgets v0.4.0. Distinct from prior issue #646.</div>
+      </div>
+      <div class="timeline-item">
+        <div class="timeline-date">Investors</div>
+        <div class="timeline-content"><strong>Outlier Ventures</strong> — "most concrete cryptographic audit layer reviewed in this batch." Follow-up pending. <strong>Tether grant</strong> — QVAC integration application submitted. <strong>Hivemind Capital</strong> — active conversation, deck requested after call.</div>
+      </div>
+      <div class="timeline-item">
+        <div class="timeline-date">Tests</div>
+        <div class="timeline-content"><strong>63/63 passing</strong> — full coverage of cryptographic and policy-enforcement paths. Local simulation complete. EC2 Nitro deployment is the next milestone.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SLIDE 9: COMPETITION -->
+  <div class="slide" id="slide-9">
+    <div class="slide-label">Competition</div>
+    <div class="section-title">Confidentiality ≠ <em>Accountability.</em></div>
+    <div class="section-body">The competitive category that most resembles VAR is confidential computing. It solves the wrong problem. Keeping inputs private is not the same as proving what the agent did. Different buyers, different trust models, different primitives.</div>
+
+    <table class="comp-table">
+      <thead>
+        <tr>
+          <th>Competitor</th>
+          <th>Strength</th>
+          <th>Gap</th>
+          <th>VAR Edge</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Azure Confidential / GCP Confidential</td>
+          <td>Enterprise scale, relationships</td>
+          <td>Not agent-native. No evidence chain. No settlement primitive.</td>
+          <td class="ours">Purpose-built for agent workflows. Attestation and settlement are one system.</td>
+        </tr>
+        <tr>
+          <td>ZK-based agent verification</td>
+          <td>No hardware dependency</td>
+          <td>Proof generation latency. No hardware root of trust. No settlement primitive.</td>
+          <td class="ours">Hardware attestation is faster. Root of trust is silicon, not math. Complementary long-term via Nova IVC.</td>
+        </tr>
+        <tr>
+          <td>Splunk / Datadog</td>
+          <td>Mature tooling, enterprise trust</td>
+          <td>Software logs. Any compromised host can alter them.</td>
+          <td class="ours">Hardware-signed, independently verifiable. Unalterable by the operator.</td>
+        </tr>
+        <tr>
+          <td>Eigen Cloud</td>
+          <td>TEE-backed compute, restaking bond</td>
+          <td>Ethereum-coupled. General-purpose. No payment settlement primitive.</td>
+          <td class="ours">Chain-agnostic. Agent-native. Built-in settlement rails.</td>
+        </tr>
+        <tr>
+          <td>Natural AI</td>
+          <td>Clean developer UX, agentic payments API</td>
+          <td>Pure software delegation. API key leak = funds immediately accessible.</td>
+          <td class="ours">PCR measurement binding means binary swap fails before settlement. API key leaks are not fatal.</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="highlight-box">
+      <div class="mono-label">Defensible position</div>
+      <p>The PCR-measurement binding between the running binary and the KMS key policy is novel in the agent settlement context. The APEX spec is open-source — the moat is the operational expertise to run it at institutional grade, built from years inside the silicon layer.</p>
+    </div>
+  </div>
+
+  <!-- SLIDE 10: ASK -->
+  <div class="slide" id="slide-10">
+    <div class="slide-label">The Ask</div>
+    <div class="section-title">$300K pre-seed.<br><em>18 months. One goal.</em></div>
+    <div class="section-body">Lean by design. This is an infrastructure primitive, not a marketing problem. The goal at the end of this runway: a signed institutional customer running APEX-attested agents in a production workflow.</div>
+
+    <table class="budget-table">
+      <thead>
+        <tr>
+          <th>Line</th>
+          <th>Duration</th>
+          <th>Total</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Founder runway ($8K/month)</td>
+          <td>18 months</td>
+          <td>$144K</td>
+        </tr>
+        <tr>
+          <td>EC2 Nitro + infrastructure ($2K/month)</td>
+          <td>18 months</td>
+          <td>$36K</td>
+        </tr>
+        <tr>
+          <td>Independent security audit</td>
+          <td>One-time</td>
+          <td>$75K</td>
+        </tr>
+        <tr>
+          <td>Legal / incorporation / misc</td>
+          <td>One-time</td>
+          <td>$20K</td>
+        </tr>
+        <tr>
+          <td>Second engineer, post-beta (TEE systems, 6 months)</td>
+          <td>6 months</td>
+          <td>$48K</td>
+        </tr>
+        <tr class="total">
+          <td>Total</td>
+          <td></td>
+          <td>~$323K</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="card-grid">
+      <div class="card">
+        <div class="card-label">Milestone 1</div>
+        <div class="card-title">EC2 Nitro deployment</div>
+        <div class="card-body">First real NSM attestation document. Python test suite validated against real hardware. Simulation becomes production.</div>
+      </div>
+      <div class="card">
+        <div class="card-label">Milestone 2</div>
+        <div class="card-title">Beta deployment</div>
+        <div class="card-body">One external party running their agent through VAR and producing a real APEX bundle. Proof of external adoption.</div>
+      </div>
+      <div class="card">
+        <div class="card-label">Milestone 3</div>
+        <div class="card-title">Signed institutional customer</div>
+        <div class="card-body">Production workflow, measurable accountability gap closed. Seed round de-risked completely.</div>
+      </div>
+    </div>
+
+    <hr class="divider">
+
+    <div style="margin-top:1rem;">
+      <div class="card-label" style="margin-bottom:0.5rem;">Contact</div>
+      <div style="font-size:0.88rem; color:var(--text-secondary); line-height:2;">
+        Kenneth Kabogo &nbsp;·&nbsp; kennethkabogo2@gmail.com<br>
+        <a class="spec-link" href="https://kennethkabogo.github.io/apex-spec" target="_blank">kennethkabogo.github.io/apex-spec</a> &nbsp;·&nbsp;
+        <a class="spec-link" href="https://github.com/kennethkabogo/verifiable-agent-runtime" target="_blank">github.com/kennethkabogo/verifiable-agent-runtime</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="dots" id="dots"></div>
+
+</div>
+
+<script>
+  let current = 1;
+  const total = 10;
+
+  const dotsEl = document.getElementById('dots');
+  for (let i = 1; i <= total; i++) {
+    const d = document.createElement('div');
+    d.className = 'dot' + (i === 1 ? ' active' : '');
+    d.onclick = () => goTo(i);
+    dotsEl.appendChild(d);
+  }
+
+  function goTo(n) {
+    document.getElementById('slide-' + current).classList.remove('active');
+    document.querySelectorAll('.dot')[current - 1].classList.remove('active');
+    current = n;
+    document.getElementById('slide-' + current).classList.add('active');
+    document.querySelectorAll('.dot')[current - 1].classList.add('active');
+    document.getElementById('counter').textContent = String(current).padStart(2,'0') + ' / ' + String(total).padStart(2,'0');
+    window.scrollTo(0, 0);
+  }
+
+  function nextSlide() { if (current < total) goTo(current + 1); }
+  function prevSlide() { if (current > 1) goTo(current - 1); }
+
+  document.addEventListener('keydown', e => {
+    if (e.key === 'ArrowRight') nextSlide();
+    if (e.key === 'ArrowLeft') prevSlide();
+  });
+</script>
+</body>
+</html>
