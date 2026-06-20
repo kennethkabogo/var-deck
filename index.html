@@ -308,12 +308,12 @@
     <div class="card-label" style="margin-bottom:1rem;">Roadmap — what the $300K builds toward</div>
     <div class="card-grid">
       <div class="card">
-        <div class="card-label">Now — Q3 2026</div>
-        <div class="card-title">EC2 Nitro deployment</div>
-        <div class="card-body">First real NSM attestation document. Python test suite validated against real hardware. APEX test vectors published. Simulation becomes production.</div>
+        <div class="card-label" style="color:var(--text-tertiary);">Shipped — Q2 2026</div>
+        <div class="card-title" style="color:var(--text-secondary);">EC2 Nitro deployment</div>
+        <div class="card-body">Real NSM attestation document. KMS Decrypt gate on hardware PCR0 passing. Session resume without EIF rebuild. Systemd crash recovery. Simulation is production.</div>
       </div>
-      <div class="card">
-        <div class="card-label">Q3 — Q4 2026</div>
+      <div class="card" style="border-color:var(--accent-border);">
+        <div class="card-label">Now — Q3 2026</div>
         <div class="card-title">Beta deployment</div>
         <div class="card-body">One external party running their agent through VAR and producing a real APEX bundle. First APEX-compliant runtime outside our own codebase.</div>
       </div>
@@ -411,8 +411,12 @@
         <div class="timeline-content"><strong>Outlier Ventures</strong> — "most concrete cryptographic audit layer reviewed in this batch." Follow-up pending. <strong>Tether grant</strong> — QVAC integration application submitted. <strong>Hivemind Capital</strong> — active conversation, deck requested after call.</div>
       </div>
       <div class="timeline-item">
+        <div class="timeline-date">Nitro</div>
+        <div class="timeline-content"><strong>First real NSM attestation in production</strong> — KMS Decrypt gate on PCR0=170583dd… passed with live attestation document. Session resumed across enclave restart without EIF rebuild or PCR change. Systemd unit deployed — crash recovery and hibernate-on-stop automated. Simulation is now production.</div>
+      </div>
+      <div class="timeline-item">
         <div class="timeline-date">Tests</div>
-        <div class="timeline-content"><strong>92/92 passing</strong> — full coverage of cryptographic and policy-enforcement paths. Local simulation complete. EC2 Nitro deployment is the next milestone.</div>
+        <div class="timeline-content"><strong>92/92 passing</strong> — full coverage of cryptographic and policy-enforcement paths. Validated in local simulation and on EC2 Nitro hardware.</div>
       </div>
     </div>
   </div>
