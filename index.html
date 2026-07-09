@@ -173,12 +173,12 @@
     <div class="slide-label">The Problem</div>
     <div class="section-title">Agents act.<br><em>Nobody can prove what they did.</em></div>
     <div class="section-body">
-      When an AI agent executes a financial transaction, routes a payment, or makes a compliance-critical decision — the only record is a software log. Software logs can be altered. Any compromised host can silently rewrite them. There is no cryptographic proof of what the agent decided, what data it saw, or whether the binary running it was tampered with.
+      When an AI agent executes a financial transaction, routes a payment, or makes a compliance-critical decision — the only record is a software log. Software logs can be altered. Any compromised host can silently rewrite them. There is no cryptographic proof of what the agent decided, what data it saw, or whether the binary running it was tampered with. This isn't a crypto-specific failure mode — it's what happens anywhere an autonomous agent's actions are trusted without hardware-rooted proof underneath them: capital markets, freight and logistics, insurance claims, compliance-critical workflows generally.
     </div>
 
     <div class="highlight-box">
-      <div class="mono-label">Live Evidence — April 18, 2026</div>
-      <p>KelpDAO lost $290M because their verifier had no hardware-level execution boundary. Lazarus Group swapped binaries on the RPC nodes feeding the verifier. The malicious nodes showed truth to monitors, lies to the verifier. No attestation. No recourse. In a VAR architecture this attack fails at step one — a binary swap changes the PCR0 measurement, the KMS policy gate closes, and nothing settles.</p>
+      <div class="mono-label">Case in point — April 18, 2026</div>
+      <p>KelpDAO lost $290M because their verifier had no hardware-level execution boundary. Lazarus Group swapped binaries on the RPC nodes feeding the verifier. The malicious nodes showed truth to monitors, lies to the verifier. No attestation. No recourse. In a VAR architecture this attack fails at step one — a binary swap changes the PCR0 measurement, the KMS policy gate closes, and nothing settles. It's the clearest public example because the failure is already visible and priced in DeFi — but the underlying gap is the same wherever an agent acts without hardware-rooted proof.</p>
     </div>
 
     <div class="card-grid">
@@ -290,56 +290,21 @@
     </div>
   </div>
 
-  <!-- SLIDE 6: THE STACK -->
+  <!-- SLIDE 6: MARKET -->
   <div class="slide" id="slide-6">
-    <div class="slide-label">The Stack</div>
-    <div class="section-title">VAR proves it.<br><em>Finfiti settles it.</em></div>
-    <div class="section-body">
-      VAR is the attestation primitive. Finfiti is the programmable settlement interface that lets agents touch money — route payments, release escrow, settle transactions — against a verified APEX attestation. Its value is derived entirely from VAR. Without the attestation layer, it's another fintech API. With it, it's the primitive that makes agent-native finance possible.
-    </div>
-
-    <div class="highlight-box">
-      <div class="mono-label">The S3 analogy</div>
-      <p>S3 is just object storage — a simple idea. But because it sits beneath everything, it became one of the most valuable pieces of infrastructure on earth. Finfiti is settlement storage: the lowest-level interface between a verified agent action and a financial consequence. We built it ourselves as the first application on APEX. It proved the primitive works in production. That's its job.</p>
-    </div>
-
-    <hr class="divider">
-
-    <div class="card-label" style="margin-bottom:1rem;">Roadmap — what the $300K builds toward</div>
-    <div class="card-grid">
-      <div class="card">
-        <div class="card-label" style="color:var(--text-tertiary);">Shipped — Q2 2026</div>
-        <div class="card-title" style="color:var(--text-secondary);">EC2 Nitro deployment</div>
-        <div class="card-body">Real NSM attestation document. KMS Decrypt gate on hardware PCR0 passing. Session resume without EIF rebuild. Systemd crash recovery. Simulation is production.</div>
-      </div>
-      <div class="card" style="border-color:var(--accent-border);">
-        <div class="card-label">Now — Q3 2026</div>
-        <div class="card-title">Beta deployment</div>
-        <div class="card-body">One external party running their agent through VAR and producing a real APEX bundle. First APEX-compliant runtime outside our own codebase.</div>
-      </div>
-      <div class="card">
-        <div class="card-label">Q4 2026 — Q1 2027</div>
-        <div class="card-title">Institutional customer + ARM CCA</div>
-        <div class="card-body">Signed institutional customer in production. ARM CCA port begins. QVAC integration if Tether grant lands. Seed round.</div>
-      </div>
-    </div>
-  </div>
-
-  <!-- SLIDE 7: MARKET -->
-  <div class="slide" id="slide-7">
     <div class="slide-label">Market</div>
-    <div class="section-title">Who needs this<br><em>today vs. tomorrow.</em></div>
+    <div class="section-title">The gap is universal.<br><em>Crypto proved it first.</em></div>
     <div class="section-body">
-      Most fintechs are not deploying autonomous agents. They use ML models, rules engines, and decision support tools — a human still approves the high-stakes action. The true autonomous agent market, where agents touch money without human approval, is almost entirely crypto-native today. Enterprise compliance buyers are the 2027/2028 market.
+      Most fintechs aren't deploying fully autonomous agents yet — ML models and decision-support tools with a human approving the high-stakes action. But some sectors already let agents touch money and execute decisions with zero human approval. Crypto is where that's most visible and most measurable today, which makes it the strongest available proof of the problem — not the ceiling on the market. The same gap opens up in freight, insurance, and institutional settlement the moment a human stops being in the loop there too.
     </div>
 
     <div class="tier">
       <div class="tier-header">
-        <div class="tier-tag now">Today — 2026</div>
+        <div class="tier-tag now">Validated today</div>
         <div class="tier-title">Crypto-native autonomous agents</div>
       </div>
       <div class="tier-body">
-        These deployments already have fully autonomous agents touching money without human approval. The accountability gap is felt, not theoretical. $160B+ in DeFi TVL is managed autonomously today with no attestation layer underneath it. Source: DefiLlama.
+        Already running fully autonomous agents that touch money without human approval — the accountability gap here isn't theoretical, it's already been exploited. $160B+ in DeFi TVL moves through these systems today with no attestation layer underneath it. Source: DefiLlama.
       </div>
       <div class="tier-examples">
         <span class="pill">DeFi treasury management</span>
@@ -351,11 +316,11 @@
 
     <div class="tier">
       <div class="tier-header">
-        <div class="tier-tag soon">Tomorrow — 2027/2028</div>
+        <div class="tier-tag soon">Expanding market</div>
         <div class="tier-title">Enterprise compliance buyers</div>
       </div>
       <div class="tier-body">
-        As autonomous agents move into freight, financial services, and insurance, the compliance buyer — General Counsel, Chief Risk Officer — will ask for proof of what the agent did. Log files will not be sufficient. APEX is the answer they'll need before they ask.
+        As autonomous agents take on freight routing, financial services, and insurance workflows, the compliance buyer — General Counsel, Chief Risk Officer — will need proof of what the agent did, not a log file. APEX is built to be that answer before the question gets asked.
       </div>
       <div class="tier-examples">
         <span class="pill amber">Freight / logistics</span>
@@ -383,8 +348,8 @@
     </div>
   </div>
 
-  <!-- SLIDE 8: TRACTION -->
-  <div class="slide" id="slide-8">
+  <!-- SLIDE 7: TRACTION -->
+  <div class="slide" id="slide-7">
     <div class="slide-label">Traction</div>
     <div class="section-title">Public record.<br><em>Independently verifiable.</em></div>
     <div class="section-body">Every claim below is publicly verifiable. No internal metrics, no vanity numbers.</div>
@@ -418,11 +383,15 @@
         <div class="timeline-date">Tests</div>
         <div class="timeline-content"><strong>92/92 passing</strong> — full coverage of cryptographic and policy-enforcement paths. Validated in local simulation and on EC2 Nitro hardware.</div>
       </div>
+      <div class="timeline-item">
+        <div class="timeline-date">Finfiti</div>
+        <div class="timeline-content"><strong>Built as the first application on APEX</strong> — a settlement interface used to prove the attestation primitive holds up end-to-end in production. Not the product this raise funds.</div>
+      </div>
     </div>
   </div>
 
-  <!-- SLIDE 9: COMPETITION -->
-  <div class="slide" id="slide-9">
+  <!-- SLIDE 8: COMPETITION -->
+  <div class="slide" id="slide-8">
     <div class="slide-label">Competition</div>
     <div class="section-title">Confidentiality ≠ <em>Accountability.</em></div>
     <div class="section-body">The competitive category that most resembles VAR is confidential computing. It solves the wrong problem. Keeping inputs private is not the same as proving what the agent did. Different buyers, different trust models, different primitives.</div>
@@ -476,8 +445,8 @@
     </div>
   </div>
 
-  <!-- SLIDE 10: ASK -->
-  <div class="slide" id="slide-10">
+  <!-- SLIDE 9: ASK -->
+  <div class="slide" id="slide-9">
     <div class="slide-label">The Ask</div>
     <div class="section-title">$300K pre-seed.<br><em>18 months. One goal.</em></div>
     <div class="section-body">Lean by design. This is an infrastructure primitive, not a marketing problem. The goal at the end of this runway: a signed institutional customer running APEX-attested agents in a production workflow.</div>
@@ -560,7 +529,7 @@
 
 <script>
   let current = 1;
-  const total = 10;
+  const total = 9;
 
   const dotsEl = document.getElementById('dots');
   for (let i = 1; i <= total; i++) {
