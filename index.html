@@ -394,7 +394,7 @@
   <div class="slide" id="slide-8">
     <div class="slide-label">Competition</div>
     <div class="section-title">Confidentiality ≠ <em>Accountability.</em></div>
-    <div class="section-body">The competitive category that most resembles VAR is confidential computing. It solves the wrong problem. Keeping inputs private is not the same as proving what the agent did. Different buyers, different trust models, different primitives.</div>
+    <div class="section-body">Three categories get compared to VAR, and all three solve an adjacent problem, not this one. The common thread: none of them are designed for an adversarial operator.</div>
 
     <table class="comp-table">
       <thead>
@@ -407,22 +407,28 @@
       </thead>
       <tbody>
         <tr>
-          <td>Azure Confidential / GCP Confidential</td>
-          <td>Enterprise scale, relationships</td>
-          <td>Not agent-native. No evidence chain. No settlement primitive.</td>
-          <td class="ours">Purpose-built for agent workflows. Attestation and settlement are one system.</td>
+          <td>Observability tools (Langsmith, Arize, Helicone, Braintrust)</td>
+          <td>Genuinely good at tracing agent behavior — inputs, outputs, chain steps, latency</td>
+          <td>Every log is operator-controlled. The operator can redact, alter, or fabricate records after the fact. Trust terminates at the operator.</td>
+          <td class="ours">Assumes the operator is adversarial by design, not trustworthy. Hardware-enforced, not log-based.</td>
+        </tr>
+        <tr>
+          <td>Confidential computing (Anjuna, Gramine, Enarx)</td>
+          <td>Protects what's inside the enclave from the host</td>
+          <td>Attestation proves the right binary is running — it says nothing about what the agent decided. No evidence bundle, no chain of custody.</td>
+          <td class="ours">Seals the room and records what happened inside it. Solves accountability, not just confidentiality.</td>
+        </tr>
+        <tr>
+          <td>Attestation infrastructure (Azure Attestation, Intel Trust Authority, AWS Nitro NSM)</td>
+          <td>Signed proof a binary hash is running in a genuine TEE</td>
+          <td>Application semantics are out of scope — no concept of an agent decision or an evidence chain.</td>
+          <td class="ours">These are primitives VAR builds on, not competitors. APEX is the application-semantic layer on top.</td>
         </tr>
         <tr>
           <td>ZK-based agent verification</td>
           <td>No hardware dependency</td>
           <td>Proof generation latency. No hardware root of trust. No settlement primitive.</td>
           <td class="ours">Hardware attestation is faster. Root of trust is silicon, not math. Complementary long-term via Nova IVC.</td>
-        </tr>
-        <tr>
-          <td>Splunk / Datadog</td>
-          <td>Mature tooling, enterprise trust</td>
-          <td>Software logs. Any compromised host can alter them.</td>
-          <td class="ours">Hardware-signed, independently verifiable. Unalterable by the operator.</td>
         </tr>
         <tr>
           <td>Eigen Cloud</td>
@@ -440,13 +446,68 @@
     </table>
 
     <div class="highlight-box">
-      <div class="mono-label">Defensible position</div>
-      <p>The PCR-measurement binding between the running binary and the KMS key policy is novel in the agent settlement context. The APEX spec is open-source — the moat is the operational expertise to run it at institutional grade, built from years inside the silicon layer.</p>
+      <div class="mono-label">What we understand that they don't</div>
+      <p>The accountability problem and the confidentiality problem are distinct. Most confidential computing is built for an operator protecting their own data from a cloud provider. VAR is built for the counterparty — the regulator, auditor, or enterprise buyer — who needs proof the operator didn't tamper with evidence. That operator-untrusted constraint requires hardware enforcement: PCR-gated KMS Decrypt makes it impossible for the operator to access the signing key without running the exact audited binary. No competitor has designed for an adversarial operator. The APEX spec is open-source — the moat is the operational expertise to run this at institutional grade, built from years spent finding the holes in these systems from the attack side.</p>
     </div>
   </div>
 
-  <!-- SLIDE 9: ASK -->
+  <!-- SLIDE 9: BUSINESS MODEL -->
   <div class="slide" id="slide-9">
+    <div class="slide-label">Business Model</div>
+    <div class="section-title">Three tiers.<br><em>Compliance is where it concentrates.</em></div>
+    <div class="section-body">
+      The buyer changes by tier. Engineering teams adopt the API and per-agent tiers directly — no compliance trigger needed, which is exactly how our earliest crypto-native conversations (DeFi protocols, autonomous trading desks) are shaping up. Enterprise flat contracts are a different sale entirely: the buyer is legal, compliance, or procurement, and the trigger isn't someone choosing VAR — it's a regulator audit, a contract clause requiring AI auditability, or internal counsel blocking a launch.
+    </div>
+
+    <div class="tier">
+      <div class="tier-header">
+        <div class="tier-tag now">Self-serve</div>
+        <div class="tier-title">API tier — ~$0.005 per attested bundle</div>
+      </div>
+      <div class="tier-body">Startups and developers embedding VAR directly. Buyer is engineering — no compliance trigger required. This is where crypto-native teams land today.</div>
+    </div>
+
+    <div class="tier">
+      <div class="tier-header">
+        <div class="tier-tag now">Production</div>
+        <div class="tier-title">Per-agent tier — $500–$2,000 / agent / month</div>
+      </div>
+      <div class="tier-body">Teams running attested agents in production at meaningful scale. Still an engineering-led purchase.</div>
+    </div>
+
+    <div class="tier">
+      <div class="tier-header">
+        <div class="tier-tag soon">Where revenue concentrates</div>
+        <div class="tier-title">Enterprise flat contracts — $80K–$400K / year</div>
+      </div>
+      <div class="tier-body">Audit SLAs and legal indemnification. Buyer is legal, compliance, or procurement. The comparison: Vanta and Drata charge $15K–$150K/year for SOC 2 evidence automation — VAR generates the cryptographic evidence upstream of that.</div>
+    </div>
+
+    <hr class="divider">
+
+    <div class="stat-row">
+      <div class="stat">
+        <div class="stat-value">2K–5K</div>
+        <div class="stat-label">Enterprises globally likely needing agent-accountability infrastructure by 2028</div>
+      </div>
+      <div class="stat">
+        <div class="stat-value">$100M ARR</div>
+        <div class="stat-label">At 1,000 customers × $100K ACV — Vanta hit this in ~5 years on the same procurement-gate dynamic</div>
+      </div>
+      <div class="stat">
+        <div class="stat-value">Aug 2027</div>
+        <div class="stat-label">EU AI Act high-risk enforcement begins — the regulatory trigger for the enterprise tier</div>
+      </div>
+    </div>
+
+    <div class="amber-box">
+      <div class="mono-label">Honest uncertainty</div>
+      <p>Regulatory timelines slip — the EU AI Act enforcement schedule has already moved once. The real risk is this stays "nice to have" until a headline enforcement action creates urgency. We're building the infrastructure before the gate fully exists — the window could be 2027 or 2031.</p>
+    </div>
+  </div>
+
+  <!-- SLIDE 10: ASK -->
+  <div class="slide" id="slide-10">
     <div class="slide-label">The Ask</div>
     <div class="section-title">$300K pre-seed.<br><em>18 months. One goal.</em></div>
     <div class="section-body">Lean by design. This is an infrastructure primitive, not a marketing problem. The goal at the end of this runway: a signed institutional customer running APEX-attested agents in a production workflow.</div>
@@ -529,7 +590,7 @@
 
 <script>
   let current = 1;
-  const total = 9;
+  const total = 10;
 
   const dotsEl = document.getElementById('dots');
   for (let i = 1; i <= total; i++) {
