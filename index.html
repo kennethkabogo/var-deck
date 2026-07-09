@@ -210,7 +210,7 @@
 
     <div class="code-block">
 <span class="comment"># APEX Bundle — what every agent action produces, in real time</span>
-<span class="hl">bundle.header</span>       spec_version: "2.4.0" | session_id | agent_id: SHA-256(EIF)
+<span class="hl">bundle.header</span>       spec_version: "2.7.1" | session_id | agent_id: SHA-256(EIF)
 <span class="hl">bundle.attestation</span>  nsm_raw: COSE_Sign1 | pcr0/1/2 | session_pub (enclave-born key)
 <span class="hl">bundle.evidence</span>     seq[] → { action_type | payload_hash | prev_hash | entry_sig }
 <span class="hl">bundle.seal</span>         pcr_commitment | bundle_hash | seal_sig (Ed25519, session key)
@@ -232,8 +232,8 @@
         <div class="stat-label">Sealed crash recovery RTO — chain loses at most one evidence window</div>
       </div>
       <div class="stat">
-        <div class="stat-value">v2.4.0</div>
-        <div class="stat-label">Current spec — crash recovery, temporal attestation, PQ migration path, ZK extension roadmap</div>
+        <div class="stat-value">v2.7.1</div>
+        <div class="stat-label">Current spec — crash recovery, temporal attestation validated on real Nitro hardware, PQ migration path, ZK extension roadmap</div>
       </div>
     </div>
   </div>
@@ -277,15 +277,15 @@
       </div>
       <div class="timeline-item">
         <div class="timeline-date">Qualcomm</div>
-        <div class="timeline-content"><strong>Critical vulnerabilities in Qualcomm TF-A</strong> — spanning SMMU isolation bypass, TrustZone privilege escalation, and Secure World secret extraction across Snapdragon devices. Validated and paid under coordinated disclosure.</div>
+        <div class="timeline-content"><strong>3 High-severity vulnerabilities in Qualcomm TF-A</strong> — spanning SMMU isolation bypass, TrustZone privilege escalation, and Secure World secret extraction across Snapdragon devices. Validated and paid under coordinated disclosure; CVEs pending assignment.</div>
       </div>
       <div class="timeline-item">
         <div class="timeline-date">MediaTek</div>
-        <div class="timeline-content"><strong>CVE-2026-20467 assigned</strong> — High-severity finding in MediaTek's SiP SMC handler. Patch shipping in a future MediaTek Product Security Bulletin. Additional findings under coordinated disclosure.</div>
+        <div class="timeline-content"><strong>3 High-severity CVEs assigned</strong> (CVE-2026-20467, -20468, -20469) — headlined by Privilege-Blind Forwarding in MediaTek's TF-A Secure Monitor via the APUSYS SiP handler, leading to full TEE compromise. Bounty pending, public bulletin Aug 3, 2026.</div>
       </div>
       <div class="timeline-item">
         <div class="timeline-date">APEX</div>
-        <div class="timeline-content"><strong>Authored the APEX spec</strong> — open, independently implementable, versioned at kennethkabogo.github.io/apex-spec. v2.4.0 includes sealed crash recovery protocol, temporal attestation (Argon2id SWF at hibernate boundaries), post-quantum migration path (ML-DSA primary, SPHINCS+ lattice-free alternative), and ZK integrity proof research extension targeting Nova/SuperNova IVC for O(1) verification.</div>
+        <div class="timeline-content"><strong>Authored the APEX spec</strong> — open, independently implementable, versioned at kennethkabogo.github.io/apex-spec. v2.7.1 includes sealed crash recovery protocol, temporal attestation (Argon2id SWF at hibernate boundaries, parameters validated via real Nitro hardware benchmarking), post-quantum migration path (ML-DSA primary, SPHINCS+ lattice-free alternative), and ZK integrity proof research extension targeting Nova/SuperNova IVC for O(1) verification.</div>
       </div>
     </div>
   </div>
@@ -392,7 +392,7 @@
     <div class="timeline">
       <div class="timeline-item">
         <div class="timeline-date">Spec</div>
-        <div class="timeline-content"><strong>APEX v2.4.0 live at canonical URL</strong> — open, versioned, independently implementable. Crash recovery protocol, post-quantum migration path, ZK integrity proof research extension. <a class="spec-link" href="https://kennethkabogo.github.io/apex-spec" target="_blank">kennethkabogo.github.io/apex-spec</a></div>
+        <div class="timeline-content"><strong>APEX v2.7.1 live at canonical URL</strong> — open, versioned, independently implementable. Crash recovery protocol, post-quantum migration path, ZK integrity proof research extension. <a class="spec-link" href="https://kennethkabogo.github.io/apex-spec" target="_blank">kennethkabogo.github.io/apex-spec</a></div>
       </div>
       <div class="timeline-item">
         <div class="timeline-date">ARM</div>
@@ -400,7 +400,7 @@
       </div>
       <div class="timeline-item">
         <div class="timeline-date">CVEs</div>
-        <div class="timeline-content"><strong>CVE-2026-20467 assigned — MediaTek SiP SMC handler.</strong> Critical findings in Qualcomm TF-A under coordinated disclosure with bounties paid. Additional MediaTek findings pending bulletin.</div>
+        <div class="timeline-content"><strong>7 vulnerabilities across 3 silicon vendors, all under coordinated disclosure.</strong> MediaTek: 3 High-severity findings (CVE-2026-20467, -20468, -20469) — headlined by Privilege-Blind Forwarding in the TF-A Secure Monitor via the APUSYS SiP handler, leading to full TEE compromise; bounty pending, public bulletin Aug 3, 2026. Qualcomm: 3 High-severity findings spanning SMMU isolation bypass, TrustZone privilege escalation, and Secure World secret extraction — bounties paid, CVEs pending assignment. AMD: 1 Medium-severity finding (CVE-2026-43551, double-fetch race condition in the XRT driver (xocl) leading to kernel DoS) — bounty paid, public bulletin May 2027.</div>
       </div>
       <div class="timeline-item">
         <div class="timeline-date">ZK Security</div>
