@@ -169,6 +169,30 @@
     background: var(--accent);
     transform: scale(1.75);
   }
+
+  @media print {
+    @page { size: 1280px 720px; margin: 0; }
+
+    html, body { height: auto; overflow: visible; }
+    .shell { height: auto; }
+    .topbar, .dots { display: none; }
+
+    .slides {
+      position: static;
+      height: auto;
+      overflow: visible;
+    }
+    .slide {
+      position: relative;
+      opacity: 1 !important;
+      pointer-events: auto;
+      display: flex !important;
+      width: 1280px;
+      height: 720px;
+      page-break-after: always;
+      break-after: page;
+    }
+  }
 </style>
 </head>
 <body>
