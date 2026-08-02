@@ -31,21 +31,22 @@
     display: flex; align-items: center; justify-content: space-between;
     margin-bottom: 3rem; padding-bottom: 1rem; border-bottom: 1px solid var(--border);
   }
-  .nav-brand { font-family: var(--mono); font-size: 12px; color: var(--accent); letter-spacing: 0.1em; text-transform: uppercase; }
-  .slide-counter { font-family: var(--mono); font-size: 11px; color: var(--text-tertiary); }
+  .nav-brand { font-family: var(--mono); font-size: 13px; color: var(--accent); letter-spacing: 0.1em; text-transform: uppercase; }
+  .slide-counter { font-family: var(--mono); font-size: 13px; color: var(--text-secondary); }
   .slide-nav { display: flex; gap: 0.5rem; }
   .slide-nav button {
-    background: var(--surface); border: 1px solid var(--border); color: var(--text-secondary);
-    padding: 6px 14px; font-family: var(--mono); font-size: 11px; cursor: pointer; transition: all 0.15s;
+    background: var(--surface); border: 1px solid #333; color: var(--text-secondary);
+    padding: 6px 14px; font-family: var(--mono); font-size: 12px; cursor: pointer; transition: all 0.15s;
   }
   .slide-nav button:hover { border-color: var(--accent); color: var(--accent); }
+  .slide-nav button.pdf-btn { color: var(--text-secondary); }
 
   .slide { display: none; animation: fadeIn 0.2s ease; }
   .slide.active { display: block; }
   @keyframes fadeIn { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: translateY(0); } }
 
   .slide-label {
-    font-family: var(--mono); font-size: 10px; color: var(--accent);
+    font-family: var(--mono); font-size: 11px; color: var(--accent);
     letter-spacing: 0.15em; text-transform: uppercase; margin-bottom: 2rem;
     display: flex; align-items: center; gap: 0.75rem;
   }
@@ -53,20 +54,20 @@
 
   .hero-title { font-size: clamp(2rem, 5vw, 3.5rem); font-weight: 300; line-height: 1.1; letter-spacing: -0.02em; margin-bottom: 1.5rem; }
   .hero-title em { font-style: normal; color: var(--accent); }
-  .hero-sub { font-size: 1.1rem; color: var(--text-secondary); font-weight: 300; line-height: 1.6; max-width: 560px; margin-bottom: 3rem; }
+  .hero-sub { font-size: 1.15rem; color: var(--text-secondary); font-weight: 300; line-height: 1.7; max-width: 600px; margin-bottom: 3rem; }
   .hero-meta { display: flex; gap: 2rem; flex-wrap: wrap; }
-  .meta-item { font-family: var(--mono); font-size: 11px; color: var(--text-tertiary); }
-  .meta-item span { color: var(--text-secondary); display: block; font-size: 13px; margin-top: 2px; }
+  .meta-item { font-family: var(--mono); font-size: 12px; color: var(--text-secondary); }
+  .meta-item span { color: var(--text-primary); display: block; font-size: 14px; margin-top: 2px; }
 
   .section-title { font-size: clamp(1.5rem, 3vw, 2.2rem); font-weight: 300; letter-spacing: -0.02em; line-height: 1.2; margin-bottom: 0.75rem; }
   .section-title em { font-style: normal; color: var(--accent); }
-  .section-body { font-size: 0.95rem; color: var(--text-secondary); line-height: 1.7; max-width: 600px; margin-bottom: 2rem; }
+  .section-body { font-size: 1rem; color: var(--text-secondary); line-height: 1.75; max-width: 640px; margin-bottom: 2rem; }
 
   .card-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1rem; margin-top: 1.5rem; }
   .card { background: var(--surface); border: 1px solid var(--border); padding: 1.25rem; }
-  .card-label { font-family: var(--mono); font-size: 10px; color: var(--accent); letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 0.5rem; }
-  .card-title { font-size: 0.95rem; font-weight: 500; margin-bottom: 0.5rem; }
-  .card-body { font-size: 0.82rem; color: var(--text-secondary); line-height: 1.6; }
+  .card-label { font-family: var(--mono); font-size: 11px; color: var(--accent); letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 0.5rem; }
+  .card-title { font-size: 1rem; font-weight: 500; margin-bottom: 0.5rem; }
+  .card-body { font-size: 0.9rem; color: var(--text-secondary); line-height: 1.65; }
 
   .code-block {
     background: var(--surface); border: 1px solid var(--border); border-left: 2px solid var(--accent);
@@ -79,17 +80,18 @@
   .stat-row { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 1rem; margin: 1.5rem 0; }
   .stat { border-left: 2px solid var(--accent-border); padding-left: 1rem; }
   .stat-value { font-size: 1.8rem; font-weight: 300; color: var(--accent); font-family: var(--mono); line-height: 1; margin-bottom: 0.25rem; }
-  .stat-label { font-size: 0.75rem; color: var(--text-secondary); line-height: 1.4; }
+  .stat-label { font-size: 0.85rem; color: var(--text-secondary); line-height: 1.5; }
 
   .timeline { margin: 1.5rem 0; }
   .timeline-item { display: grid; grid-template-columns: 120px 1fr; gap: 1rem; padding: 0.75rem 0; border-top: 1px solid var(--border); align-items: start; }
-  .timeline-date { font-family: var(--mono); font-size: 11px; color: var(--accent); padding-top: 2px; }
-  .timeline-content { font-size: 0.88rem; color: var(--text-secondary); line-height: 1.5; }
+  .timeline-date { font-family: var(--mono); font-size: 12px; color: var(--accent); padding-top: 2px; }
+  .timeline-content { font-size: 0.95rem; color: var(--text-secondary); line-height: 1.65; }
   .timeline-content strong { color: var(--text-primary); font-weight: 500; }
 
-  .comp-table { width: 100%; border-collapse: collapse; margin: 1.5rem 0; font-size: 0.82rem; }
-  .comp-table th { font-family: var(--mono); font-size: 10px; color: var(--text-tertiary); letter-spacing: 0.1em; text-transform: uppercase; text-align: left; padding: 0.5rem 0.75rem; border-bottom: 1px solid var(--border); }
-  .comp-table td { padding: 0.75rem; border-bottom: 1px solid var(--border); color: var(--text-secondary); vertical-align: top; line-height: 1.5; }
+  .comp-table-wrap { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+  .comp-table { width: 100%; border-collapse: collapse; margin: 1.5rem 0; font-size: 0.9rem; min-width: 580px; }
+  .comp-table th { font-family: var(--mono); font-size: 11px; color: var(--text-secondary); letter-spacing: 0.1em; text-transform: uppercase; text-align: left; padding: 0.5rem 0.75rem; border-bottom: 1px solid var(--border); }
+  .comp-table td { padding: 0.75rem; border-bottom: 1px solid var(--border); color: var(--text-secondary); vertical-align: top; line-height: 1.6; }
   .comp-table td:first-child { color: var(--text-primary); font-weight: 500; }
   .comp-table td.ours { color: var(--accent); }
 
@@ -102,20 +104,20 @@
   .budget-table tr.total td:last-child { color: var(--accent); font-size: 1.1rem; }
 
   .highlight-box { background: var(--accent-dim); border: 1px solid var(--accent-border); padding: 1.25rem; margin: 1.5rem 0; }
-  .highlight-box p { font-size: 0.95rem; line-height: 1.6; color: var(--text-primary); }
-  .highlight-box .mono-label { font-family: var(--mono); font-size: 10px; color: var(--accent); letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 0.5rem; }
+  .highlight-box p { font-size: 1rem; line-height: 1.7; color: var(--text-primary); }
+  .highlight-box .mono-label { font-family: var(--mono); font-size: 11px; color: var(--accent); letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 0.5rem; }
 
   .amber-box { background: var(--amber-dim); border: 1px solid var(--amber-border); padding: 1.25rem; margin: 1.5rem 0; }
-  .amber-box p { font-size: 0.95rem; line-height: 1.6; color: var(--text-primary); }
-  .amber-box .mono-label { font-family: var(--mono); font-size: 10px; color: var(--amber); letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 0.5rem; }
+  .amber-box p { font-size: 1rem; line-height: 1.7; color: var(--text-primary); }
+  .amber-box .mono-label { font-family: var(--mono); font-size: 11px; color: var(--amber); letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 0.5rem; }
 
   .tier { background: var(--surface); border: 1px solid var(--border); padding: 1.25rem; margin-bottom: 1rem; }
   .tier-header { display: flex; align-items: center; gap: 1rem; margin-bottom: 0.75rem; }
-  .tier-tag { font-family: var(--mono); font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase; padding: 2px 8px; border: 1px solid; }
+  .tier-tag { font-family: var(--mono); font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; padding: 2px 8px; border: 1px solid; }
   .tier-tag.now { color: var(--accent); border-color: var(--accent-border); }
   .tier-tag.soon { color: var(--amber); border-color: var(--amber-border); }
-  .tier-title { font-size: 0.95rem; font-weight: 500; }
-  .tier-body { font-size: 0.82rem; color: var(--text-secondary); line-height: 1.6; }
+  .tier-title { font-size: 1rem; font-weight: 500; }
+  .tier-body { font-size: 0.92rem; color: var(--text-secondary); line-height: 1.65; }
   .tier-examples { margin-top: 0.75rem; display: flex; flex-wrap: wrap; gap: 0.4rem; }
 
   .pill { display: inline-block; font-family: var(--mono); font-size: 10px; color: var(--accent); border: 1px solid var(--accent-border); padding: 2px 8px; letter-spacing: 0.05em; }
@@ -129,10 +131,26 @@
   .dot { width: 6px; height: 6px; background: var(--border); cursor: pointer; transition: background 0.15s; }
   .dot.active { background: var(--accent); }
 
-  @media (max-width: 600px) {
+  @media (max-width: 640px) {
+    .deck { padding: 1.25rem 1rem; }
+    .nav { flex-wrap: wrap; gap: 0.75rem; }
+    .nav-brand { font-size: 12px; }
     .card-grid { grid-template-columns: 1fr; }
-    .timeline-item { grid-template-columns: 1fr; }
-    .hero-meta { gap: 1rem; }
+    .stat-row { grid-template-columns: 1fr 1fr; }
+    .timeline-item { grid-template-columns: 1fr; gap: 0.25rem; }
+    .timeline-date { font-size: 11px; }
+    .hero-meta { flex-direction: column; gap: 0.75rem; }
+    .hero-sub { font-size: 1rem; }
+    .section-body { font-size: 0.95rem; }
+    .code-block { font-size: 0.72rem; }
+    .budget-table { font-size: 0.82rem; }
+  }
+
+  @media print {
+    @page { margin: 1.5cm; }
+    .nav, .dots { display: none !important; }
+    .slide { display: block !important; page-break-before: always; break-before: page; }
+    #slide-1 { page-break-before: avoid !important; break-before: avoid !important; }
   }
 </style>
 </head>
@@ -146,6 +164,7 @@
       <div class="slide-nav">
         <button onclick="prevSlide()">← Prev</button>
         <button onclick="nextSlide()">Next →</button>
+        <button class="pdf-btn" onclick="window.print()">↓ PDF</button>
       </div>
     </div>
   </div>
@@ -396,6 +415,7 @@
     <div class="section-title">Confidentiality ≠ <em>Accountability.</em></div>
     <div class="section-body">Three categories get compared to VAR, and all three solve an adjacent problem, not this one. The common thread: none of them are designed for an adversarial operator.</div>
 
+    <div class="comp-table-wrap">
     <table class="comp-table">
       <thead>
         <tr>
@@ -450,6 +470,7 @@
         </tr>
       </tbody>
     </table>
+    </div>
 
     <div class="highlight-box">
       <div class="mono-label">What we understand that they don't</div>
