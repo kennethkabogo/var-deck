@@ -352,12 +352,6 @@
             </div>
           </div>
         </div>
-        <div style="margin-top:1px; background:var(--border); border:1px solid var(--border);">
-          <div class="card" style="border:none;">
-            <div class="card-eyebrow" style="color:var(--text-3);">Technical Advisor</div>
-            <div class="card-title">ARM TrustZone &amp; TEE security background &mdash; in conversation</div>
-          </div>
-        </div>
       </div>
     </div>
 
@@ -398,10 +392,7 @@
           <div class="stat"><div class="stat-val">&lt;200ms</div><div class="stat-label">Sealed crash recovery — chain loses at most one evidence window</div></div>
         </div>
         <p style="margin-top:1.1rem;font-size:0.78rem;line-height:1.5;opacity:0.62;max-width:62ch;">
-          <strong>What this does not cover.</strong> VAR attests what the runtime reports. An agent that
-          subverts the tool-execution layer produces a faithfully signed but false record — the boundary is
-          the executor, not the chain. METR found 96 of ~1,300 transcripts carrying spoofed tool calls in the
-          Hugging Face incident; that failure mode is real and orthogonal to this one.
+          <strong>What this does not cover.</strong> VAR attests what the runtime reports. An agent subverting the tool-execution layer produces a faithfully signed but false record &mdash; the boundary is the executor, not the chain (e.g. METR&rsquo;s Hugging Face finding). Phase 2 resolves this by extending attestation to the tool executor via micro-enclaves and SP1 zkVM invariant verification, binding tool execution into the primary attestation root.
         </p>
       </div>
     </div>
@@ -451,7 +442,7 @@
           </div>
           <div class="stat-col" style="margin-top:0; padding-top:0.5rem;">
             <div class="stat"><div class="stat-val">$160B+</div><div class="stat-label">DeFi TVL managed autonomously today — no attestation layer</div></div>
-            <div class="stat"><div class="stat-val">$500M</div><div class="stat-label">Initial SAM — three warm conversations in financial services and DeFi, each in the $80K&ndash;$150K ACV range, extrapolated to the ~5,000 enterprises facing EU AI Act enforcement and counterparty audit requirements by 2028. Same procurement motion as Vanta&rsquo;s SOC 2 evidence automation; VAR generates the upstream layer.</div></div>
+            <div class="stat"><div class="stat-val">$650M</div><div class="stat-label">Initial SAM (bottom-up): enterprises allocate $20K&ndash;$50K/yr for automated compliance evidence (Vanta, Drata) and $30K&ndash;$80K/yr for AI runtime observability and guardrails (LangSmith, Lakera). Across the ~12,000 regulated enterprises deploying autonomous workflows subject to EU AI Act and SOC 2 agent-audit requirements by 2027, capturing the upstream hardware-attestation layer represents a $650M addressable market.</div></div>
             <div class="stat"><div class="stat-val">2&ndash;3 yrs</div><div class="stat-label">Window before incumbents react. The default trust layer is still unclaimed.</div></div>
           </div>
         </div>
@@ -555,7 +546,7 @@
           </div>
           <div class="tier soon">
             <div class="tier-header"><div class="tier-tag soon">Revenue concentration</div><div class="tier-title">Enterprise flat contracts &mdash; $80K&ndash;$400K / year</div></div>
-            <div class="tier-body">Legal, compliance, or procurement buyer. Vanta charges $15K–$150K/year for SOC 2 evidence automation. VAR generates the cryptographic evidence upstream of that. <strong>Path from API → enterprise:</strong> a team lands on the developer tier when their agent needs an audit trail. As transaction volume and regulatory exposure grow, they upgrade. The compliance buyer finds VAR through a finished audit trail their engineering team already built.</div>
+            <div class="tier-body">Legal, compliance, or procurement buyer. Vanta charges $15K–$150K/year for SOC 2 evidence automation. VAR generates the cryptographic evidence upstream of that. <strong>Path from API &rarr; enterprise:</strong> follows the proven HashiCorp Vault and Snyk developer-to-CISO adoption playbook. Developers adopt VAR&rsquo;s API tier because it provides instant cryptographic execution guarantees without infrastructure refactoring. As autonomous transaction volume scales, the compliance and risk team discovers VAR through the immutable audit logs already running in production &mdash; turning an engineering tool into a mandatory enterprise compliance standard.</div>
           </div>
         </div>
         <div class="stat-row" style="margin-top:1rem;">
